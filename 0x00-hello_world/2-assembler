@@ -1,2 +1,2 @@
 #!/bin/bash
-gcc "$CFILE" -S -fverbose-asm -o "${CFILE%.c}.s"
+gcc "$CFILE" -S -o "${CFILE%.c}.s"
