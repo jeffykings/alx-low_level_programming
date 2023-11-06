@@ -1,6 +1,6 @@
 /**
   * _strcmp -  compares two strings.
-  * @s1: pointer to string 
+  * @s1: pointer to string
   * @s2: pointe to string
   * Return: integer
   */
@@ -24,11 +24,11 @@ int _strcmp(char *s1, char *s2)
 			}
 			else if (s1[i] > s2[i])
 			{
-				return(15);
+				return (15);
 			}
 			else
 			{
-				return(-15);
+				return (-15);
 			}
 		}
 	}
