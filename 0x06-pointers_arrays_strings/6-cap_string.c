@@ -8,11 +8,12 @@ char *cap_string(char *str)
 {
 	int i, j;
 
-	char array[] = {' ','\t','\v','\n',',',';','.','!','?','"','(',')','{','}','\0'}; 
+	char array[] = {' ', '\t', '\v', '\n', ',', ';', '.', '!', '?', '"',
+		'(', ')', '{', '}', '\0'};
 
 	for  (i = 0; str[i] != '\0'; i++)
 	{
-		if (str[0] >= 'A' && str[0] <= 'Z')
+		if (i == 0)
 		{
 			continue;
 		}
@@ -24,7 +25,7 @@ char *cap_string(char *str)
 		{
 			for (j = 0; array[j] != '\0'; j++)
 			{
-				if ((str[i-1] == array[j]) && (str[i] >= 97 && str[i] <= 122))
+				if ((str[i - 1] == array[j]) && (str[i] >= 97 && str[i] <= 122))
 				{
 					str[i] = str[i] - 32;
 					break;
