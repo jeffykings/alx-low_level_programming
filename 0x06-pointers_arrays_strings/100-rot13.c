@@ -6,23 +6,26 @@
 
 char *rot13(char *str)
 {
-	int i, j;
+	int i, current, base;
 
-	char array1[] = "ABCDEFGHIJKLMabcdefghijklm";
-	char array2[] = "NOPQRSTUVWXYZnopqrstuvwxyz";
 
 	for (i = 0; str[i] != '\0'; i++)
 	{
-		for (j = 0; (str[i] >= 'A' && str[i] <= 'Z') || (str[i] >= 'a' && str[i] <= 'z'); j++)
+		current = str[i];
+
+		for (; (current >= 'A' && current <= 'Z') || (current >= 'a' && current <= 'z');)
 		{
-			if (str[i] == array1[j])
+			if (current >= 'A' && current <= 'Z')
 			{
-				str[i] = array2[j];
+				base = 'A';
+				str[i] = (current - base + 13) % 26 + base;
 				break;
 			}
 			else
 			{
-				str[i] = array1[j];
+				base = 'a';
+				str[i] = (current - base + 13) % 26 + base;
+				 break;
 			}
 		}
 	}
