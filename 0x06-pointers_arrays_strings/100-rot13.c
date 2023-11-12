@@ -13,7 +13,8 @@ char *rot13(char *str)
 	{
 		current = str[i];
 
-		for (; (current >= 'A' && current <= 'Z') || (current >= 'a' && current <= 'z');)
+		for (; (current >= 'A' && current <= 'Z') ||
+				(current >= 'a' && current <= 'z');)
 		{
 			if (current >= 'A' && current <= 'Z')
 			{
@@ -25,7 +26,7 @@ char *rot13(char *str)
 			{
 				base = 'a';
 				str[i] = (current - base + 13) % 26 + base;
-				 break;
+				break;
 			}
 		}
 	}
