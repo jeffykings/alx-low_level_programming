@@ -12,14 +12,16 @@ int set_bit(unsigned long int *n, unsigned int index)
 {
 	int *ptr;
 
-	unsigned int i = 11;
+	unsigned int i = 64;
 
-	ptr = malloc(11 * sizeof(int));
+	ptr = malloc(64 * sizeof(int));
 	if (ptr == NULL)
 	{
 		printf("malloc error");
 		return (-1);
 	}
+	if (index >= 64)
+		return (-1);
 
 	while (i > 0)
 	{
@@ -32,12 +34,12 @@ int set_bit(unsigned long int *n, unsigned int index)
 			ptr[i - 1] = 0;
 		i--;
 	}
-	for (i = 0; i <= 10 ; i++)
+	for (i = 0; i <= 63 ; i++)
 	{
-		if (i == (10 - index))
+		if (i == (63 - index))
 		{
 			ptr[i] = 1;
-			*n = binary_to_dec(ptr, 11);
+			*n = binary_to_dec(ptr, 64);
 			free(ptr);
 			return (1);
 		}
@@ -50,6 +52,7 @@ int set_bit(unsigned long int *n, unsigned int index)
 /**
   * binary_to_dec - converts a binary number to an unsigned int.
   * @b: pointer to the binary to be converted
+  * @size: the size it will occupy in memmory
   * Return: the converted number, else 0 if there is one or more chars in the
   * string b that is not 0 or 1 or b is NULLi
   */
