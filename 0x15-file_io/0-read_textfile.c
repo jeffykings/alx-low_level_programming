@@ -16,7 +16,7 @@ ssize_t read_textfile(const char *filename, size_t letters)
 	FILE *fp = NULL;
 
 	str = malloc(letters * sizeof(char));
-	if(str == NULL)
+	if (str == NULL)
 		return (0);
 
 	if (filename == NULL)
@@ -25,8 +25,9 @@ ssize_t read_textfile(const char *filename, size_t letters)
 	if (fp == NULL)
 		return (0);
 
-	count = fread(str,sizeof(char), letters, fp);
+	count = fread(str, sizeof(char), letters, fp);
 	fwrite(str, sizeof(char), count, stdout);
 	fclose(fp);
+	free(str);
 	return (count);
 }
