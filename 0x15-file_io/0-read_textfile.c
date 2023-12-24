@@ -12,7 +12,7 @@ ssize_t read_textfile(const char *filename, size_t letters)
 {
 	char *str;
 
-	size_t count, count2;
+	int count, count2;
 	FILE *fp = NULL;
 
 	str = malloc(letters * sizeof(char));
@@ -28,7 +28,7 @@ ssize_t read_textfile(const char *filename, size_t letters)
 	count = fread(str, sizeof(char), letters, fp);
 	count2 = fwrite(str, sizeof(char), count, stdout);
 
-	if (count != count2)
+	if (count == -1 || count2 == -1 || count != count2)
 	{
 		free(str);
 		return (0);
