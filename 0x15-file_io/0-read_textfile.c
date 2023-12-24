@@ -12,8 +12,7 @@ ssize_t read_textfile(const char *filename, size_t letters)
 {
 	char *str;
 
-	int count, count2;
-	FILE *fp = NULL;
+	int o, r, w;
 
 	str = malloc(letters * sizeof(char));
 	if (str == NULL)
@@ -21,19 +20,17 @@ ssize_t read_textfile(const char *filename, size_t letters)
 
 	if (filename == NULL)
 		return (0);
-	fp = fopen(filename, "r");
-	if (fp == NULL)
-		return (0);
+	o = open(filename, O_RDONLY);
 
-	count = fread(str, sizeof(char), letters, fp);
-	count2 = fwrite(str, sizeof(char), count, stdout);
+	r = read(o, str, letters);
+	w = write(1, str, r);
 
-	if (count == -1 || count2 == -1 || count != count2)
+	if (o == -1 || r == -1 || w == -1 || r != w)
 	{
 		free(str);
 		return (0);
 	}
-	fclose(fp);
+	close(o);
 	free(str);
-	return (count2);
+	return (w);
 }
