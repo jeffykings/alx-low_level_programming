@@ -10,28 +10,23 @@
   */
 ssize_t read_textfile(const char *filename, size_t letters)
 {
-	char str[30];
+	char *str;
 
-	size_t count = 0;
+	size_t count;
 	FILE *fp = NULL;
 
-	if (access(filename, R_OK) == -1)
-	{
-		fprintf(stderr, "Error: Read permission denied\n");
+	str = malloc(letters * sizeof(char));
+	if(str == NULL)
 		return (0);
-	}
+
 	if (filename == NULL)
 		return (0);
 	fp = fopen(filename, "r");
 	if (fp == NULL)
 		return (0);
 
-	while ((count <= letters) && !(feof(fp)))
-	{
-		fgets(str, 20, fp);
-		count += printf("%s", str);
-	}
-
+	count = fread(str,sizeof(char), letters, fp);
+	fwrite(str, sizeof(char), count, stdout);
 	fclose(fp);
-	return ((count - 1));
+	return (count);
 }

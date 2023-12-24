@@ -8,6 +8,7 @@
  *       written in the 0x14-file_io directory.
  */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
