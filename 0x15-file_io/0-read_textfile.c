@@ -15,6 +15,11 @@ ssize_t read_textfile(const char *filename, size_t letters)
 	size_t count = 0;
 	FILE *fp = NULL;
 
+	if (access(filename, R_OK) == -1)
+	{
+		fprintf(stderr, "Error: Read permission denied\n");
+		return (0);
+	}
 	if (filename == NULL)
 		return (0);
 	fp = fopen(filename, "r");
