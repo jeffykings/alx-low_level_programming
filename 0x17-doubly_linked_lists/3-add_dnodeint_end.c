@@ -1,5 +1,11 @@
 #include "lists.h"
 
+/**
+ * add_dnodeint_end - adds newnode at the end of the list
+ * @head: beginning of the head
+ * @n: element to be added
+ * Return: address of the new element, or NULL if it failed
+ */
 dlistint_t *add_dnodeint_end(dlistint_t **head, const int n)
 {
 	dlistint_t *temp, *newnode;
