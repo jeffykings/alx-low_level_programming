@@ -1,35 +1,35 @@
-#include "main.h"
-
 /**
- * *_strspn - gets the length of a prefix substring
- * @s: string to evaluate
- * @accept: string containing the list of characters to match in s
- *
- * Return: the number of bytes in the initial segment
- * of s which consist only of bytes from accept
- */
+  * _strspn - gets the length of a prefix substring.
+  * @s: pointer to a string to be checked
+  * @accept: the range of strings to be compared
+  * Return: integer
+  */
+
 unsigned int _strspn(char *s, char *accept)
 {
-	int i, j, f, flag;
+	int i, j, check, count;
 
-	f = 0;
+	count = 0;
 
 	for (i = 0; s[i] != '\0'; i++)
 	{
-		flag = 0;
+		check = 0;
+
 		for (j = 0; accept[j] != '\0'; j++)
 		{
 			if (s[i] == accept[j])
 			{
-				f++;
-				flag = 1;
+				count++;
+				check = 1;
+				break;
 			}
 		}
-		if (flag == 0)
+
+		if (check != 1)
 		{
-			return (f);
+			return (count);
 		}
 	}
 
-	return (0);
+	return (count);
 }
