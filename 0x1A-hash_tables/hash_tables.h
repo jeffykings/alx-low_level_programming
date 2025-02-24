@@ -39,4 +39,6 @@ unsigned long int hash_djb2(const unsigned char *str);
 unsigned long int key_index(const unsigned char *key, unsigned long int size);
 int hash_table_set(hash_table_t *ht, const char *key, const char *value);
 hash_node_t *create_hash_table_element(const char *key, const char *value);
+void _free_item(hash_node_t *node);
+void handle_collision(hash_table_t *ht, hash_node_t *hash_element, const char *key, unsigned long int idx);
 #endif

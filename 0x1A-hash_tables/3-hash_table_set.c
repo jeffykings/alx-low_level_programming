@@ -15,6 +15,9 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 	hash_node_t *hash_element;
 	unsigned long int idx;
 
+	if (ht == NULL)
+		return (0);
+
 	if (key == NULL)
 		return (0);
 
@@ -25,10 +28,8 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 		ht->array[idx] = hash_element;
 	else
 	{
-		hash_element->next = ht->array[idx];
-		ht->array[idx] = hash_element;
+		handle_collision(ht, hash_element, key, idx);
 	}
-
 	return (1);
 }
 
@@ -67,4 +68,70 @@ hash_node_t *create_hash_table_element(const char *key, const char *value)
 
 	newnode->next = NULL;
 	return (newnode);
+}
+
+/**
+ * _free_item - free items inside a node
+ *
+ * @node: node to be freed
+ */
+void _free_item(hash_node_t *node)
+{
+	free(node->key);
+	free(node->value);
+	if (node->next != NULL)
+		node->next = NULL;
+	free(node);
+}
+
+/**
+ * handle_collision - does what its name suggests
+ *
+ * @key: is the key. key can not be an empty string
+ * @hash_element: the item we want to check for collision
+ * @ht: hash table
+ * @idx: the position we want to add value and key
+ */
+void handle_collision(hash_table_t *ht, hash_node_t *hash_element,
+		const char *key, unsigned long int idx)
+{
+	hash_node_t *prev;
+	hash_node_t *temp;
+
+	temp = ht->array[idx];
+
+	while (temp->next != NULL)
+	{
+		prev = temp;
+		if (strcmp(temp->key, key) == 0)
+		{
+			if (strcmp(temp->key, ht->array[idx]->key) == 0)
+			{
+				hash_element->next = temp->next;
+				ht->array[idx] = hash_element;
+			} else
+			{
+				hash_element->next = temp->next;
+				prev->next =  hash_element;
+			}
+
+			_free_item(temp);
+			return;
+		}
+		temp++;
+	}
+
+	if (strcmp(temp->key, ht->array[idx]->key) == 0)
+	{
+		ht->array[idx] = hash_element;
+		_free_item(temp);
+	} else if (strcmp(temp->key, key) == 0)
+	{
+		prev->next = hash_element;
+		_free_item(temp);
+	} else
+	{
+		hash_element->next = ht->array[idx];
+		ht->array[idx] = hash_element;
+	}
 }
