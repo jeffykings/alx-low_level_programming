@@ -22,6 +22,7 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 		return (0);
 
 	idx = key_index((const unsigned char *)key, ht->size);
+	printf("idx : %lu \n", idx);
 	hash_element = create_hash_table_element(key, value);
 
 	if (ht->array[idx] == NULL)
@@ -99,10 +100,10 @@ void handle_collision(hash_table_t *ht, hash_node_t *hash_element,
 	hash_node_t *temp;
 
 	temp = ht->array[idx];
+	prev = NULL;
 
 	while (temp->next != NULL)
 	{
-		prev = temp;
 		if (strcmp(temp->key, key) == 0)
 		{
 			if (strcmp(temp->key, ht->array[idx]->key) == 0)
@@ -118,16 +119,16 @@ void handle_collision(hash_table_t *ht, hash_node_t *hash_element,
 			_free_item(temp);
 			return;
 		}
+		prev = temp;
 		temp++;
 	}
 
-	if (strcmp(temp->key, ht->array[idx]->key) == 0)
+	if (strcmp(temp->key, key) == 0)
 	{
-		ht->array[idx] = hash_element;
-		_free_item(temp);
-	} else if (strcmp(temp->key, key) == 0)
-	{
-		prev->next = hash_element;
+		if (prev != NULL)
+			prev->next = hash_element;
+		else
+			ht->array[idx] = hash_element;
 		_free_item(temp);
 	} else
 	{
