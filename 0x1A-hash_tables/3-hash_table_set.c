@@ -18,13 +18,14 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 	if (ht == NULL)
 		return (0);
 
-	if (key == NULL)
+	if (key == NULL || strcmp(key, "") == 0)
 		return (0);
 
 	idx = key_index((const unsigned char *)key, ht->size);
 	printf("idx : %lu \n", idx);
 	hash_element = create_hash_table_element(key, value);
-
+	if (hash_element == NULL)
+		return (0);
 	if (ht->array[idx] == NULL)
 		ht->array[idx] = hash_element;
 	else
@@ -120,7 +121,7 @@ void handle_collision(hash_table_t *ht, hash_node_t *hash_element,
 			return;
 		}
 		prev = temp;
-		temp++;
+		temp = temp->next;
 	}
 
 	if (strcmp(temp->key, key) == 0)
