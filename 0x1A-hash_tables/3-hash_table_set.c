@@ -22,7 +22,6 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 		return (0);
 
 	idx = key_index((const unsigned char *)key, ht->size);
-	printf("idx : %lu \n", idx);
 	hash_element = create_hash_table_element(key, value);
 	if (hash_element == NULL)
 		return (0);
