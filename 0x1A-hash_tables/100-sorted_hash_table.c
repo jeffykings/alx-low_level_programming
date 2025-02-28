@@ -247,7 +247,8 @@ char *shash_table_get(const shash_table_t *ht, const char *key)
 }
 
 /**
- * shash_table_print -  a function that prints a hash table
+ * shash_table_print -  Should print the hash table using the
+ * sorted linked list
  *
  * @ht: is the hash table
  */
@@ -278,7 +279,8 @@ void shash_table_print(const shash_table_t *ht)
 }
 
 /**
- * shash_table_print_rev -  a function that prints a hash table
+ * shash_table_print_rev -  Should print the hash table using
+ * the sorted linked list in rev
  *
  * @ht: is the hash table
  */
