@@ -7,7 +7,7 @@
  * Return: if success a pointer to the newly created hash table else NULL
  */
 
-hash_table_t *shash_table_create(unsigned long int size)
+shash_table_t *shash_table_create(unsigned long int size)
 {
 	unsigned long int i;
 
@@ -75,11 +75,11 @@ int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 		ht->shead = hash_element;
 		ht->stail = hash_element;
 	}
-	if else(strcmp(ht->shead->key, key) > 0)
+	else if (strcmp(ht->shead->key, key) > 0)
 	{
-		new->snext = ht->shead;
-		ht->shead->sprev = new;
-		ht->shead = new;
+		hash_element->snext = ht->shead;
+		ht->shead->sprev = hash_element;
+		ht->shead = hash_element;
 	}
 	else
 	{
@@ -255,10 +255,7 @@ char *shash_table_get(const shash_table_t *ht, const char *key)
 void shash_table_print(const shash_table_t *ht)
 {
 
-	hash_node_t *temp;
-	unsigned long int i;
-
-	int first = 1;
+	shash_node_t *temp;
 
 	if (ht == NULL)
 		return;
@@ -269,10 +266,9 @@ void shash_table_print(const shash_table_t *ht)
 	while (temp)
 	{
 		printf("\'%s\': \'%s\'", temp->key, temp->value);
-		first = 0;	
 		temp = temp->snext;
 
-		if (node != NULL)
+		if (temp != NULL)
 			printf(", ");
 	}
 	printf("}\n");
@@ -284,13 +280,10 @@ void shash_table_print(const shash_table_t *ht)
  *
  * @ht: is the hash table
  */
-void shash_table_print_rev(const shash_table_t *ht);
+void shash_table_print_rev(const shash_table_t *ht)
 {
 
-	hash_node_t *temp;
-	unsigned long int i;
-
-	int first = 1;
+	shash_node_t *temp;
 
 	if (ht == NULL)
 		return;
@@ -301,15 +294,13 @@ void shash_table_print_rev(const shash_table_t *ht);
 	while (temp)
 	{
 		printf("\'%s\': \'%s\'", temp->key, temp->value);
-		first = 0;	
 		temp = temp->sprev;
 
-		if (node != NULL)
+		if (temp != NULL)
 			printf(", ");
 	}
 	printf("}\n");
 }
-#include "hash_tables.h"
 
 /**
  * shash_table_delete -  a function that deletes a hash table.
