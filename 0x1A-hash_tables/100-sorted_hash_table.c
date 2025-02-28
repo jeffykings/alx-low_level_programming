@@ -276,3 +276,34 @@ void shash_table_print(const shash_table_t *ht)
 	}
 	printf("}\n");
 }
+
+/**
+ * shash_table_print_rev -  a function that prints a hash table
+ *
+ * @ht: is the hash table
+ */
+void shash_table_print_rev(const shash_table_t *ht);
+{
+
+	hash_node_t *temp;
+	unsigned long int i;
+
+	int first = 1;
+
+	if (ht == NULL)
+		return;
+
+	printf("{");
+	temp = ht->stail;
+	
+	while (temp)
+	{
+		printf("\'%s\': \'%s\'", temp->key, temp->value);
+		first = 0;	
+		temp = temp->sprev;
+
+		if (node != NULL)
+			printf(", ");
+	}
+	printf("}\n");
+}
