@@ -38,7 +38,8 @@ shash_table_t *shash_table_create(unsigned long int size)
 }
 
 /**
- * shash_table_set - a function that adds an element to the hash table in a sorted way.
+ * shash_table_set - a function that adds an element to the hash table
+ * in a sorted way.
  *
  * @ht: is the hash table you want to add or update the key/value to
  * @key:  is the key. key can not be an empty string
@@ -50,7 +51,6 @@ shash_table_t *shash_table_create(unsigned long int size)
 int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 {
 	shash_node_t *hash_element;
-	shash_node_t *temp;
 	unsigned long int idx;
 
 	if (ht == NULL)
@@ -61,47 +61,60 @@ int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 
 	idx = key_index((const unsigned char *)key, ht->size);
 	hash_element = screate_hash_table_element(key, value);
+
 	if (hash_element == NULL)
 		return (0);
+
 	if (ht->array[idx] == NULL)
 		ht->array[idx] = hash_element;
 	else
-	{
 		shandle_collision(ht, hash_element, key, idx);
-	}
 
 	if (ht->shead == NULL)
 	{
 		ht->shead = hash_element;
 		ht->stail = hash_element;
-	}
-	else if (strcmp(ht->shead->key, key) > 0)
+	} else if (strcmp(ht->shead->key, key) > 0)
 	{
 		hash_element->snext = ht->shead;
 		ht->shead->sprev = hash_element;
 		ht->shead = hash_element;
+	} else
+	{
+		add_sorted_tail_mid(ht, hash_element,  key);
+	}
+	return (1);
+}
+
+/**
+ * add_sorted_tail_mid - for add values at the middle and end of
+ * the sorted linked list
+ *
+ * @ht: the hash table
+ * @hash_element: items in the hast table
+ * @key: the key to be added
+ */
+void add_sorted_tail_mid(shash_table_t *ht,
+		shash_node_t *hash_element, const char *key)
+{
+	shash_node_t *temp;
+
+	temp = ht->shead;
+	while (temp->snext != NULL && strcmp(temp->snext->key, key) < 0)
+		temp = temp->snext;
+	if (temp->snext == NULL && strcmp(temp->key, key) < 0)
+	{
+		ht->stail = hash_element;
+		temp->snext = hash_element;
+		hash_element->sprev = temp;
 	}
 	else
 	{
-		temp = ht->shead;
-		while(temp->snext != NULL && strcmp(temp->snext->key, key) < 0)
-			temp = temp->snext;
-
-		if (temp->snext == NULL && strcmp(temp->snext->key, key) < 0)
-		{
-			ht->stail = hash_element;
-			temp->snext = hash_element;
-			hash_element->sprev = temp;
-		}
-		else
-		{
-			hash_element->sprev = temp->sprev;
-			temp->sprev->snext = hash_element;
-			hash_element->snext = temp;
-			temp->sprev = hash_element;
-		}
+		hash_element->sprev = temp->sprev;
+		temp->sprev->snext = hash_element;
+		hash_element->snext = temp;
+		temp->sprev = hash_element;
 	}
-	return (1);
 }
 
 /**
@@ -144,12 +157,15 @@ shash_node_t *screate_hash_table_element(const char *key, const char *value)
 }
 
 /**
- * _free_item - free items inside a node
+ * _sfree_item - free items inside a node
  *
  * @node: node to be freed
  */
 void _sfree_item(shash_node_t *node)
 {
+	if (node == NULL)
+		return;
+
 	free(node->key);
 	free(node->value);
 	if (node->next != NULL)
@@ -262,7 +278,7 @@ void shash_table_print(const shash_table_t *ht)
 
 	printf("{");
 	temp = ht->shead;
-	
+
 	while (temp)
 	{
 		printf("\'%s\': \'%s\'", temp->key, temp->value);
@@ -290,7 +306,7 @@ void shash_table_print_rev(const shash_table_t *ht)
 
 	printf("{");
 	temp = ht->stail;
-	
+
 	while (temp)
 	{
 		printf("\'%s\': \'%s\'", temp->key, temp->value);

@@ -91,4 +91,5 @@ void shash_table_delete(shash_table_t *ht);
 shash_node_t *screate_hash_table_element(const char *key, const char *value);
 void _sfree_item(shash_node_t *node);
 void shandle_collision(shash_table_t *ht, shash_node_t *shash_element, const char *key, unsigned long int idx);
+void add_sorted_tail_mid(shash_table_t *ht, shash_node_t *hash_element, const char *key);
 #endif
