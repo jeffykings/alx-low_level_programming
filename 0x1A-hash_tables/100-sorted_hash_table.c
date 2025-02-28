@@ -210,7 +210,7 @@ void shandle_collision(shash_table_t *ht, shash_node_t *hash_element,
 }
 
 /**
- * hash_table_get - a function that retrieves a value associated with a key
+ * shash_table_get - a function that retrieves a value associated with a key
  *
  * @ht:   is the hash table you want to look into
  * @key: is the key you are looking for
@@ -218,7 +218,7 @@ void shandle_collision(shash_table_t *ht, shash_node_t *hash_element,
  * Return:  value associated with the element, or NULL
  * if key couldn’t be found
  */
-char *shash_table_get(const hash_table_t *ht, const char *key)
+char *shash_table_get(const shash_table_t *ht, const char *key)
 {
 	shash_node_t *temp;
 	unsigned long int idx;
@@ -244,4 +244,35 @@ char *shash_table_get(const hash_table_t *ht, const char *key)
 	}
 
 	return (NULL);
+}
+
+/**
+ * shash_table_print -  a function that prints a hash table
+ *
+ * @ht: is the hash table
+ */
+void shash_table_print(const shash_table_t *ht)
+{
+
+	hash_node_t *temp;
+	unsigned long int i;
+
+	int first = 1;
+
+	if (ht == NULL)
+		return;
+
+	printf("{");
+	temp = ht->shead;
+	
+	while (temp)
+	{
+		printf("\'%s\': \'%s\'", temp->key, temp->value);
+		first = 0;	
+		temp = temp->snext;
+
+		if (node != NULL)
+			printf(", ");
+	}
+	printf("}\n");
 }
