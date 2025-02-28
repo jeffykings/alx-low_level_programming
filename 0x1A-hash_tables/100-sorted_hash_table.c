@@ -309,3 +309,33 @@ void shash_table_print_rev(const shash_table_t *ht);
 	}
 	printf("}\n");
 }
+#include "hash_tables.h"
+
+/**
+ * shash_table_delete -  a function that deletes a hash table.
+ *
+ * @ht:   is the hash table
+ */
+void shash_table_delete(shash_table_t *ht)
+{
+	shash_node_t *temp;
+	shash_node_t *temp2;
+	unsigned long int i;
+
+	for (i = 0; ht && i < ht->size; i++)
+	{
+		temp = ht->array[i];
+
+		while (temp)
+		{
+			temp2 = temp;
+			temp = temp->next;
+			free(temp2->key);
+			free(temp2->value);
+			free(temp2);
+		}
+	}
+
+	free(ht->array);
+	free(ht);
+}
