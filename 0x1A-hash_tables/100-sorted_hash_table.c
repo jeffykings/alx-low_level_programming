@@ -74,11 +74,13 @@ int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 	{
 		ht->shead = hash_element;
 		ht->stail = hash_element;
+		printf(" head1 key: %s\n", key);
 	} else if (strcmp(ht->shead->key, key) > 0)
 	{
 		hash_element->snext = ht->shead;
 		ht->shead->sprev = hash_element;
 		ht->shead = hash_element;
+		printf("head2 key: %s\n", key);
 	} else
 	{
 		add_sorted_tail_mid(ht, hash_element,  key);
@@ -107,6 +109,7 @@ void add_sorted_tail_mid(shash_table_t *ht,
 		ht->stail = hash_element;
 		temp->snext = hash_element;
 		hash_element->sprev = temp;
+		 printf("tail key: %s\n", key);
 	}
 	else
 	{
@@ -114,7 +117,9 @@ void add_sorted_tail_mid(shash_table_t *ht,
 		ht->shead = hash_element;
 		hash_element->snext = temp;
 		temp->sprev = hash_element;
+		 printf("mid key: %s\n", key);
 	}
+
 }
 
 /**
