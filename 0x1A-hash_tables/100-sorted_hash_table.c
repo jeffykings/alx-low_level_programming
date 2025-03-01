@@ -60,6 +60,7 @@ int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 		return (0);
 
 	idx = key_index((const unsigned char *)key, ht->size);
+	printf("idx : %lu", idx);
 	hash_element = screate_hash_table_element(key, value);
 
 	if (hash_element == NULL)
@@ -325,22 +326,17 @@ void shash_table_print_rev(const shash_table_t *ht)
  */
 void shash_table_delete(shash_table_t *ht)
 {
-	shash_node_t *temp;
-	shash_node_t *temp2;
-	unsigned long int i;
+	shash_node_t *temp, *temp2;
 
-	for (i = 0; ht && i < ht->size; i++)
+	temp = ht->shead;
+
+	while (temp)
 	{
-		temp = ht->array[i];
-
-		while (temp)
-		{
-			temp2 = temp;
-			temp = temp->next;
-			free(temp2->key);
-			free(temp2->value);
-			free(temp2);
-		}
+		temp2 = temp->snext;
+		free(temp->key);
+		free(temp->value);
+		free(temp);
+		temp = temp2;
 	}
 
 	free(ht->array);
