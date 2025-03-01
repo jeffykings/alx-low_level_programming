@@ -170,8 +170,6 @@ void _sfree_item(shash_node_t *node)
 
 	free(node->key);
 	free(node->value);
-	if (node->next != NULL)
-		node->next = NULL;
 	free(node);
 }
 
