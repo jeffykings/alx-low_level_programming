@@ -60,7 +60,6 @@ int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 		return (0);
 
 	idx = key_index((const unsigned char *)key, ht->size);
-	printf("idx : %lu", idx);
 	hash_element = screate_hash_table_element(key, value);
 
 	if (hash_element == NULL)
@@ -112,7 +111,7 @@ void add_sorted_tail_mid(shash_table_t *ht,
 	else
 	{
 		hash_element->sprev = temp->sprev;
-		temp->sprev->snext = hash_element;
+		ht->shead = hash_element;
 		hash_element->snext = temp;
 		temp->sprev = hash_element;
 	}
@@ -191,7 +190,7 @@ void shandle_collision(shash_table_t *ht, shash_node_t *hash_element,
 	temp = ht->array[idx];
 	prev = NULL;
 
-	while (temp->next != NULL)
+	while (temp && temp->next != NULL)
 	{
 		if (strcmp(temp->key, key) == 0)
 		{
@@ -248,7 +247,7 @@ char *shash_table_get(const shash_table_t *ht, const char *key)
 	if (ht->array[idx] != NULL)
 	{
 		temp = ht->array[idx];
-		while  (temp->next)
+		while  (temp && temp->next)
 		{
 			if (strcmp(temp->key, key) == 0)
 				return (temp->value);
