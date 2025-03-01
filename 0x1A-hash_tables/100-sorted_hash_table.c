@@ -186,45 +186,22 @@ void _sfree_item(shash_node_t *node)
 void shandle_collision(shash_table_t *ht, shash_node_t *hash_element,
 		const char *key, unsigned long int idx)
 {
-	shash_node_t *prev;
-	shash_node_t *temp;
+	shash_node_t *temp = ht->array[idx];
 
-	temp = ht->array[idx];
-	prev = NULL;
-
-	while (temp && temp->next != NULL)
+	while (temp)
 	{
 		if (strcmp(temp->key, key) == 0)
 		{
-			if (strcmp(temp->key, ht->array[idx]->key) == 0)
-			{
-				hash_element->next = temp->next;
-				ht->array[idx] = hash_element;
-			} else
-			{
-				hash_element->next = temp->next;
-				prev->next =  hash_element;
-			}
-
-			_sfree_item(temp);
+			free(temp->value);
+			temp->value = strdup(hash_element->value);
+			_sfree_item(hash_element);
 			return;
 		}
-		prev = temp;
 		temp = temp->next;
 	}
 
-	if (strcmp(temp->key, key) == 0)
-	{
-		if (prev != NULL)
-			prev->next = hash_element;
-		else
-			ht->array[idx] = hash_element;
-		_sfree_item(temp);
-	} else
-	{
-		hash_element->next = ht->array[idx];
-		ht->array[idx] = hash_element;
-	}
+	hash_element->next = ht->array[idx];
+	ht->array[idx] = hash_element;
 }
 
 /**
