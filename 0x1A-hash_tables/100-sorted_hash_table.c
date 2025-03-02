@@ -185,6 +185,9 @@ void _sfree_item(shash_node_t *node)
  * @hash_element: the item we want to check for collision
  * @ht: hash table
  * @idx: the position we want to add value and key
+ *
+ * Return: the original element if the key doesdnt match any
+ * exisiting key but if it does return NULL
  */
 shash_node_t *shandle_collision(shash_table_t *ht, shash_node_t *hash_element,
 		const char *key, unsigned long int idx)
