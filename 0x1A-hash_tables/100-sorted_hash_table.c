@@ -68,8 +68,11 @@ int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 	if (ht->array[idx] == NULL)
 		ht->array[idx] = hash_element;
 	else
-		shandle_collision(ht, hash_element, key, idx);
-
+	{
+		hash_element = shandle_collision(ht, hash_element, key, idx);
+		if (hash_element == NULL)
+			hash_element = screate_hash_table_element(key, value);
+	}
 	if (ht->shead == NULL)
 	{
 		ht->shead = hash_element;
@@ -102,7 +105,9 @@ void add_sorted_tail_mid(shash_table_t *ht,
 	temp = ht->shead;
 	while (temp->snext != NULL && strcmp(temp->snext->key, key) < 0)
 		temp = temp->snext;
-	if (temp->snext == NULL)
+	if (strcmp(temp->key, key) == 0)
+		return;
+	else if (temp->snext == NULL)
 	{
 		ht->stail->snext = hash_element;
 		hash_element->sprev = ht->stail;
@@ -181,7 +186,7 @@ void _sfree_item(shash_node_t *node)
  * @ht: hash table
  * @idx: the position we want to add value and key
  */
-void shandle_collision(shash_table_t *ht, shash_node_t *hash_element,
+shash_node_t *shandle_collision(shash_table_t *ht, shash_node_t *hash_element,
 		const char *key, unsigned long int idx)
 {
 	shash_node_t *temp = ht->array[idx];
@@ -193,13 +198,14 @@ void shandle_collision(shash_table_t *ht, shash_node_t *hash_element,
 			free(temp->value);
 			temp->value = strdup(hash_element->value);
 			_sfree_item(hash_element);
-			return;
+			return (NULL);
 		}
 		temp = temp->next;
 	}
 
 	hash_element->next = ht->array[idx];
 	ht->array[idx] = hash_element;
+	return (hash_element);
 }
 
 /**
